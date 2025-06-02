@@ -48,7 +48,8 @@ body {
 
 .number,
 .operator,
-.clear {
+.clear,
+.equal {
   background-color: lightslategray;
   color: #fff;
   height: 60px;
