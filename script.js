@@ -61,24 +61,24 @@ function divide(a, b) {
 };
 
 function operate(x, operator, y) {
-  Number(x);
-  Number(y);
+  x = Number(x);
+  y = Number(y);
 
   switch (operator) {
-    case "+": 
+    case "+":
       return add(x, y);
 
-    case "-": 
+    case "-":
       return subtract(x, y);
 
-    case "*": 
-    return multiply(x, y);
+    case "*":
+      return multiply(x, y);
 
-    case "/": 
+    case "/":
       return divide(x, y);
 
     default:
-      return "Invalid operator";
+      return "Err";
   }
 }
 
@@ -87,15 +87,5 @@ function updateDisplay(text) {
 }
 
 //updateDisplay("123") // Remember to cap at 12 numbers total so you dont overflow screen.
-// console.log(add(4, 8));
-// console.log(subtract(8, 4));
-// console.log(multiply(4, 8));
-// console.log(divide(8, 4));
-
-
-// let x = Number(prompt("Choose num"));
-// console.log(x);
-// let oper = "+";
-// let y = Number(prompt("Choose num"));
-
-// console.log(operate(x, oper, y));
+//work on delete function
+//work on chaining answers
