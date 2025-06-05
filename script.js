@@ -1,27 +1,42 @@
-let display = document.querySelector(".display");
-let number = document.querySelector(".number");
-let clear = document.querySelector(".clear");
-let operator = document.querySelector(".operator");
-let equal = document.querySelector(".equal");
-let num1;
-let num2;
-let sign;
+const display = document.querySelector(".display");
+const numbers = document.querySelectorAll(".number");
+const clear = document.querySelector(".clear");
+const operators = document.querySelectorAll(".operator");
+const del = document.querySelector(".delete")
+const equal = document.querySelector(".equal");
 
-number.addEventListener("click", () => {
-  let num = parseInt("123");
-  updateDisplay(num);
+let num1 = null;
+let currentInput = "";
+let operator = null;
+
+numbers.forEach(button => {
+  button.addEventListener("click", () => {
+    currentInput += button.textContent;
+    console.log(currentInput);
+    updateDisplay(currentInput);
+  });
+});
+
+operators.forEach(button => {
+  button.addEventListener("click", () => {
+    num1 = currentInput;
+    currentInput = "";
+    operator += button.textContent;
+    console.log(operator);
+    console.log(num1);
+    updateDisplay(operator);
+  })
 });
 
 clear.addEventListener("click", () => {
-  updateDisplay("");
-});
-
-operator.addEventListener("click", () => {
-  updateDisplay("+")
+  currentInput = "";
+  operator = "";
+  num1 = ""
+  updateDisplay(currentInput);
 });
 
 equal.addEventListener("click", () => {
-  operate(num1, sign, num2)
+  operate(num1, operator, currentInput)
 });
 
 
@@ -38,11 +53,18 @@ function multiply(a, b) {
 };
 
 function divide(a, b) {
-  return a * b;
+  if (b === 0) {
+    return "Cannot divide by 0"
+  }
+  return a / b;
 };
 
-function operate() {
-  return;
+function operate(x, operator, y) {
+  let result = 0;
+  if (operator === "+") {
+    result = add(x, y)
+  }
+  return result;
 }
 
 function updateDisplay(text) {
@@ -50,7 +72,15 @@ function updateDisplay(text) {
 }
 
 //updateDisplay("123") // Remember to cap at 12 numbers total so you dont overflow screen.
-console.log(add(4, 8));
-console.log(subtract(8, 4));
-console.log(multiply(4, 8));
-console.log(divide(8, 4));
+// console.log(add(4, 8));
+// console.log(subtract(8, 4));
+// console.log(multiply(4, 8));
+// console.log(divide(8, 4));
+
+
+// let x = Number(prompt("Choose num"));
+// console.log(x);
+// let oper = "+";
+// let y = Number(prompt("Choose num"));
+
+// console.log(operate(x, oper, y));
