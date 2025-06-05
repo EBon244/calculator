@@ -21,7 +21,7 @@ operators.forEach(button => {
   button.addEventListener("click", () => {
     num1 = currentInput;
     currentInput = "";
-    operator += button.textContent;
+    operator = button.textContent;
     console.log(operator);
     console.log(num1);
     updateDisplay(operator);
@@ -36,7 +36,8 @@ clear.addEventListener("click", () => {
 });
 
 equal.addEventListener("click", () => {
-  operate(num1, operator, currentInput)
+  const result = operate(num1, operator, currentInput)
+  updateDisplay(result);
 });
 
 
@@ -60,11 +61,25 @@ function divide(a, b) {
 };
 
 function operate(x, operator, y) {
-  let result = 0;
-  if (operator === "+") {
-    result = add(x, y)
+  Number(x);
+  Number(y);
+
+  switch (operator) {
+    case "+": 
+      return add(x, y);
+
+    case "-": 
+      return subtract(x, y);
+
+    case "*": 
+    return multiply(x, y);
+
+    case "/": 
+      return divide(x, y);
+
+    default:
+      return "Invalid operator";
   }
-  return result;
 }
 
 function updateDisplay(text) {
