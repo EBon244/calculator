@@ -28,16 +28,22 @@ operators.forEach(button => {
   })
 });
 
+del.addEventListener("click", () => {
+  currentInput = currentInput.slice(0, currentInput.length -1);
+  updateDisplay(currentInput)
+});
+
 clear.addEventListener("click", () => {
-  currentInput = "";
+  currentInput = null;
   operator = "";
-  num1 = ""
+  num1 = null;
   updateDisplay(currentInput);
 });
 
 equal.addEventListener("click", () => {
   const result = operate(num1, operator, currentInput)
   updateDisplay(result);
+  currentInput = result;
 });
 
 
@@ -87,5 +93,3 @@ function updateDisplay(text) {
 }
 
 //updateDisplay("123") // Remember to cap at 12 numbers total so you dont overflow screen.
-//work on delete function
-//work on chaining answers
