@@ -50,7 +50,8 @@ body {
 .operator,
 .clear,
 .equal,
-.delete {
+.delete,
+.decimal {
   background-color: lightslategray;
   color: #fff;
   height: 60px;
