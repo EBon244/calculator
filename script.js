@@ -9,10 +9,16 @@ const decimal = document.querySelector(".decimal");
 let num1 = null;
 let currentInput = "";
 let operator = null;
+let justEvaluated = false;
 
 numbers.forEach(button => {
   button.addEventListener("click", () => {
     console.log("input:", currentInput, "length:", currentInput?.length);
+    if (justEvaluated) {
+      currentInput = "";        
+      justEvaluated = false;    
+    }
+
     if (currentInput === "Err") {
       currentInput = "";
     };
@@ -38,10 +44,6 @@ decimal.addEventListener("click", () => {
 
 operators.forEach(button => {
   button.addEventListener("click", () => {
-    if (operator !== null) {
-      return;
-    };
-
     num1 = currentInput;
     currentInput = "";
     operator = button.textContent;
@@ -65,31 +67,31 @@ clear.addEventListener("click", () => {
 
 equal.addEventListener("click", () => {
   const result = operate(num1, operator, currentInput);
-  if (result.toString().length > 12) {
-    // trim or round it before displaying
-  }
   currentInput = result;
-  updateDisplay(currentInput);
+  updateDisplay(result);
+  num1 = null;
+  operator = null;
+  justEvaluated = true;
 });
 
 
 function add(a, b) {
-  return a + b;
+  return (a + b).toFixed(2);
 };
 
 function subtract(a, b) {
-  return a - b
+  return (a - b).toFixed(2);
 };
 
 function multiply(a, b) {
-  return a * b;
+  return (a * b).toFixed(2);
 };
 
 function divide(a, b) {
   if (b === 0) {
     return "Cannot divide by 0";
   }
-  return a / b;
+  return (a / b).toFixed(2);
 };
 
 function operate(x, operator, y) {
