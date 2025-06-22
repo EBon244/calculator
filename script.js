@@ -15,8 +15,8 @@ numbers.forEach(button => {
   button.addEventListener("click", () => {
     console.log("input:", currentInput, "length:", currentInput?.length);
     if (justEvaluated) {
-      currentInput = "";        
-      justEvaluated = false;    
+      currentInput = "";
+      justEvaluated = false;
     }
 
     if (currentInput === "Err") {
@@ -44,6 +44,16 @@ decimal.addEventListener("click", () => {
 
 operators.forEach(button => {
   button.addEventListener("click", () => {
+    if (num1 !== null && operator !== null && currentInput === "") {
+      return;
+    }
+
+    if (num1 !== null && operator !== null && currentInput !== "") {
+      const result = operate(num1, operator, currentInput);
+      num1 = result;
+      updateDisplay(result);
+    }
+
     num1 = currentInput;
     currentInput = "";
     operator = button.textContent;
@@ -89,7 +99,7 @@ function multiply(a, b) {
 
 function divide(a, b) {
   if (b === 0) {
-    return "Cannot divide by 0";
+    return "Why?";
   }
   return (a / b).toFixed(2);
 };
