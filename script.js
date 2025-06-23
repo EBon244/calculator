@@ -76,32 +76,69 @@ clear.addEventListener("click", () => {
 });
 
 equal.addEventListener("click", () => {
-  const result = operate(num1, operator, currentInput);
-  currentInput = result;
-  updateDisplay(result);
-  num1 = null;
-  operator = null;
-  justEvaluated = true;
+  if (num1 !== null && operator !== null && currentInput !== "") {
+    const result = operate(num1, operator, currentInput);
+
+    if (result === "Why?" || result === "Err") {
+      updateDisplay(result);
+      num1 = null;
+      operator = null;
+      currentInput = "";
+      justEvaluated = true;
+      return;
+    }
+
+    currentInput = result;
+    updateDisplay(result);
+    num1 = null;
+    operator = null;
+    justEvaluated = true;
+  }
 });
 
 
 function add(a, b) {
-  return (a + b).toFixed(2);
+  const ans = a + b;
+
+  if (!Number.isInteger(ans)) {
+    return parseFloat(ans.toFixed(2));
+  };
+
+  return ans;
 };
 
 function subtract(a, b) {
-  return (a - b).toFixed(2);
+  const ans = a - b;
+
+  if (!Number.isInteger(ans)) {
+    return parseFloat(ans.toFixed(2));
+  };
+
+  return ans;
 };
 
 function multiply(a, b) {
-  return (a * b).toFixed(2);
+  const ans = a * b;
+
+  if (!Number.isInteger(ans)) {
+    return parseFloat(ans.toFixed(2));
+  };
+
+  return ans;
 };
 
 function divide(a, b) {
   if (b === 0) {
     return "Why?";
   }
-  return (a / b).toFixed(2);
+
+  const ans = a / b;
+
+  if (!Number.isInteger(ans)) {
+    return parseFloat(ans.toFixed(2));
+  };
+
+  return ans;
 };
 
 function operate(x, operator, y) {
@@ -131,4 +168,3 @@ function updateDisplay(text) {
 }
 
 //updateDisplay("123") // Remember to cap at 12 numbers total so you dont overflow screen.
-// limit each operand to only one decimal
