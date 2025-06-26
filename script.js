@@ -5,11 +5,13 @@ const operators = document.querySelectorAll(".operator");
 const del = document.querySelector(".delete")
 const equal = document.querySelector(".equal");
 const decimal = document.querySelector(".decimal");
+const max = 10;
 
 let num1 = null;
 let currentInput = "";
 let operator = null;
 let justEvaluated = false;
+
 
 numbers.forEach(button => {
   button.addEventListener("click", () => {
@@ -164,7 +166,12 @@ function operate(x, operator, y) {
 }
 
 function updateDisplay(text) {
-  display.textContent = text;
+  if (typeof text === "number" && text.toString().length > max) {
+    const expotext = text.toExponential(3);
+    display.textContent = expotext;
+  } else {
+    display.textContent = text;
+  }
 }
 
-//updateDisplay("123") // Remember to cap at 12 numbers total so you dont overflow screen.
+// Remember to cap at 12 numbers total so you dont overflow screen.
