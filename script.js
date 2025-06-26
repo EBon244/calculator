@@ -1,19 +1,23 @@
+// DOM ELEMENTS & CONSTANTS
 const display = document.querySelector(".display");
 const numbers = document.querySelectorAll(".number");
 const clear = document.querySelector(".clear");
 const operators = document.querySelectorAll(".operator");
-const del = document.querySelector(".delete")
+const del = document.querySelector(".delete");
 const equal = document.querySelector(".equal");
 const decimal = document.querySelector(".decimal");
 const max = 10;
 
+// VARIABLES
 let num1 = null;
 let currentInput = "";
 let operator = null;
 let justEvaluated = false;
 
+// EVENT LISTENERS - KEYBOARD
 window.addEventListener("keydown", (event) => {
   console.log(event.key);
+
   if (justEvaluated) {
     currentInput = "";
     justEvaluated = false;
@@ -21,11 +25,11 @@ window.addEventListener("keydown", (event) => {
 
   if (currentInput === "Err") {
     currentInput = "";
-  };
+  }
 
-  if (currentInput === null || currentInput.length >= 10) {
+  if (currentInput === null || currentInput.length >= max) {
     return;
-  };
+  }
 
   if ("0123456789".includes(event.key)) {
     currentInput += event.key;
@@ -33,9 +37,7 @@ window.addEventListener("keydown", (event) => {
   }
 
   function handleOperator(op) {
-    if (num1 !== null && operator !== null && currentInput === "") {
-      return;
-    }
+    if (num1 !== null && operator !== null && currentInput === "") return;
 
     if (num1 !== null && operator !== null && currentInput !== "") {
       const result = operate(num1, operator, currentInput);
@@ -49,37 +51,26 @@ window.addEventListener("keydown", (event) => {
     console.log(operator);
     console.log(num1);
     updateDisplay(operator);
-  };
+  }
 
   switch (event.key) {
     case ".":
-      if (currentInput.includes(".")) {
-        return;
+      if (!currentInput.includes(".")) {
+        currentInput += decimal.textContent;
+        updateDisplay(currentInput);
       };
-
-      currentInput += decimal.textContent;
-      updateDisplay(currentInput);
       break;
 
     case "/":
-      handleOperator("/");
-      break;
-
     case "*":
-      handleOperator("*");
-      break;
-
     case "-":
-      handleOperator("-");
-      break;
-
     case "+":
-      handleOperator("+");
+      handleOperator(event.key);
       break;
 
     case "Backspace":
-      currentInput = currentInput.slice(0, currentInput.length - 1);
-      updateDisplay(currentInput)
+      currentInput = currentInput.slice(0, -1);
+      updateDisplay(currentInput);
       break;
 
     case "Enter":
@@ -100,7 +91,7 @@ window.addEventListener("keydown", (event) => {
         num1 = null;
         operator = null;
         justEvaluated = true;
-      };
+      }
       break;
 
     case "c":
@@ -113,42 +104,33 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+// EVENT LISTENERS - BUTTONS
 numbers.forEach(button => {
   button.addEventListener("click", () => {
     console.log("input:", currentInput, "length:", currentInput?.length);
-    if (justEvaluated) {
+
+    if (justEvaluated || currentInput === "Err") {
       currentInput = "";
       justEvaluated = false;
     }
 
-    if (currentInput === "Err") {
-      currentInput = "";
-    };
-
-    if (currentInput === null || currentInput.length >= 10) {
-      return;
-    };
+    if (currentInput === null || currentInput.length >= max) return;
 
     currentInput += button.textContent;
-    console.log(currentInput);
     updateDisplay(currentInput);
   });
 });
 
 decimal.addEventListener("click", () => {
-  if (currentInput.includes(".")) {
-    return;
+  if (!currentInput.includes(".")) {
+    currentInput += decimal.textContent;
+    updateDisplay(currentInput);
   };
-
-  currentInput += decimal.textContent;
-  updateDisplay(currentInput);
 });
 
 operators.forEach(button => {
   button.addEventListener("click", () => {
-    if (num1 !== null && operator !== null && currentInput === "") {
-      return;
-    }
+    if (num1 !== null && operator !== null && currentInput === "") return;
 
     if (num1 !== null && operator !== null && currentInput !== "") {
       const result = operate(num1, operator, currentInput);
@@ -159,15 +141,15 @@ operators.forEach(button => {
     num1 = currentInput;
     currentInput = "";
     operator = button.textContent;
-    console.log("operator:" + operator);
-    console.log("num1:" + num1);
+    console.log("operator:", operator);
+    console.log("num1:", num1);
     updateDisplay(operator);
-  })
+  });
 });
 
 del.addEventListener("click", () => {
-  currentInput = currentInput.slice(0, currentInput.length - 1);
-  updateDisplay(currentInput)
+  currentInput = currentInput.slice(0, -1);
+  updateDisplay(currentInput);
 });
 
 clear.addEventListener("click", () => {
@@ -198,80 +180,46 @@ equal.addEventListener("click", () => {
   }
 });
 
-
+// MATH FUNCTIONS
 function add(a, b) {
   const ans = a + b;
-
-  if (!Number.isInteger(ans)) {
-    return parseFloat(ans.toFixed(2));
-  };
-
-  return ans;
-};
+  return !Number.isInteger(ans) ? parseFloat(ans.toFixed(2)) : ans;
+}
 
 function subtract(a, b) {
   const ans = a - b;
-
-  if (!Number.isInteger(ans)) {
-    return parseFloat(ans.toFixed(2));
-  };
-
-  return ans;
-};
+  return !Number.isInteger(ans) ? parseFloat(ans.toFixed(2)) : ans;
+}
 
 function multiply(a, b) {
   const ans = a * b;
-
-  if (!Number.isInteger(ans)) {
-    return parseFloat(ans.toFixed(2));
-  };
-
-  return ans;
-};
+  return !Number.isInteger(ans) ? parseFloat(ans.toFixed(2)) : ans;
+}
 
 function divide(a, b) {
-  if (b === 0) {
-    return "Why?";
-  }
-
+  if (b === 0) return "Why?";
   const ans = a / b;
-
-  if (!Number.isInteger(ans)) {
-    return parseFloat(ans.toFixed(2));
-  };
-
-  return ans;
-};
+  return !Number.isInteger(ans) ? parseFloat(ans.toFixed(2)) : ans;
+}
 
 function operate(x, operator, y) {
   x = Number(x);
   y = Number(y);
 
   switch (operator) {
-    case "+":
-      return add(x, y);
-
-    case "-":
-      return subtract(x, y);
-
-    case "*":
-      return multiply(x, y);
-
-    case "/":
-      return divide(x, y);
-
-    default:
-      return "Err";
+    case "+": return add(x, y);
+    case "-": return subtract(x, y);
+    case "*": return multiply(x, y);
+    case "/": return divide(x, y);
+    default: return "Err";
   }
 }
 
+// DISPLAY FUNCTION
 function updateDisplay(text) {
   if (typeof text === "number" && text.toString().length > max) {
-    const expotext = text.toExponential(3);
-    display.textContent = expotext;
+    display.textContent = text.toExponential(3);
   } else {
     display.textContent = text;
   }
 }
-
-// Remember to cap at 12 numbers total so you dont overflow screen.
