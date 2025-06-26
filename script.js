@@ -12,6 +12,106 @@ let currentInput = "";
 let operator = null;
 let justEvaluated = false;
 
+window.addEventListener("keydown", (event) => {
+  console.log(event.key);
+  if (justEvaluated) {
+    currentInput = "";
+    justEvaluated = false;
+  }
+
+  if (currentInput === "Err") {
+    currentInput = "";
+  };
+
+  if (currentInput === null || currentInput.length >= 10) {
+    return;
+  };
+
+  if ("0123456789".includes(event.key)) {
+    currentInput += event.key;
+    updateDisplay(currentInput);
+  }
+
+  function handleOperator(op) {
+    if (num1 !== null && operator !== null && currentInput === "") {
+      return;
+    }
+
+    if (num1 !== null && operator !== null && currentInput !== "") {
+      const result = operate(num1, operator, currentInput);
+      num1 = result;
+      updateDisplay(result);
+    }
+
+    num1 = currentInput;
+    currentInput = "";
+    operator = op;
+    console.log(operator);
+    console.log(num1);
+    updateDisplay(operator);
+  };
+
+  switch (event.key) {
+    case ".":
+      if (currentInput.includes(".")) {
+        return;
+      };
+
+      currentInput += decimal.textContent;
+      updateDisplay(currentInput);
+      break;
+
+    case "/":
+      handleOperator("/");
+      break;
+
+    case "*":
+      handleOperator("*");
+      break;
+
+    case "-":
+      handleOperator("-");
+      break;
+
+    case "+":
+      handleOperator("+");
+      break;
+
+    case "Backspace":
+      currentInput = currentInput.slice(0, currentInput.length - 1);
+      updateDisplay(currentInput)
+      break;
+
+    case "Enter":
+      if (num1 !== null && operator !== null && currentInput !== "") {
+        const result = operate(num1, operator, currentInput);
+
+        if (result === "Why?" || result === "Err") {
+          updateDisplay(result);
+          num1 = null;
+          operator = null;
+          currentInput = "";
+          justEvaluated = true;
+          return;
+        }
+
+        currentInput = result;
+        updateDisplay(result);
+        num1 = null;
+        operator = null;
+        justEvaluated = true;
+      };
+      break;
+
+    case "c":
+    case "C":
+      num1 = null;
+      currentInput = "";
+      operator = null;
+      updateDisplay(currentInput);
+      break;
+  }
+});
 
 numbers.forEach(button => {
   button.addEventListener("click", () => {
@@ -59,8 +159,8 @@ operators.forEach(button => {
     num1 = currentInput;
     currentInput = "";
     operator = button.textContent;
-    console.log(operator);
-    console.log(num1);
+    console.log("operator:" + operator);
+    console.log("num1:" + num1);
     updateDisplay(operator);
   })
 });
