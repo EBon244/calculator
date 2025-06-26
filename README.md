@@ -19,7 +19,7 @@ A sleek, responsive calculator built with HTML, CSS, and vanilla JavaScript. It 
 
 ## 🖥️ Demo
 
-Try it live here: [Your GitHub Pages Link](https://your-username.github.io/calculator/)  
+Try it live here: [Your GitHub Pages Link](https://ebon244.github.io/calculator/)  
 <!-- Update this if you deploy it -->
 
 ---
